@@ -177,12 +177,10 @@ type SomeStruct struct {
 
 
 
-
-
 //constructing and storing json object
     myStruct := SomeStruct{
-        AVal: "Om Sai Ram",
-        BVal: []string{"Om Sai ram1","Om Sai ram2","Om Sai ram3"},
+        AVal: args[0],
+        BVal: []string{args[1],args[2],args[3]},
     }
     myStructBytes, err := json.Marshal(myStruct)
     _ = err //ignore errors for example
@@ -192,6 +190,23 @@ type SomeStruct struct {
     var retrievedStruct SomeStruct
     retrievedBytes, err := stub.GetState("myStructKey")
     json.Unmarshal(retrievedBytes,retrievedStruct)
+
+
+
+
+//constructing and storing json object
+ //   myStruct := SomeStruct{
+  //      AVal: "Om Sai Ram",
+   //     BVal: []string{"Om Sai ram1","Om Sai ram2","Om Sai ram3"},
+   // }
+//    myStructBytes, err := json.Marshal(myStruct)
+  //  _ = err //ignore errors for example
+    //stub.PutState("myStructKey",myStructBytes)
+
+    //get state back to object
+//    var retrievedStruct SomeStruct
+  //  retrievedBytes, err := stub.GetState("myStructKey")
+    //json.Unmarshal(retrievedBytes,retrievedStruct)
 
     //congratulations, retrievedStruct now contains the data you stored earlier
     return nil,nil    
@@ -205,7 +220,7 @@ type SomeStruct struct {
 //   }
 
 
-//    fmt.Printf("Reshma1", vehicle);
+   // fmt.Printf("Reshma1", retrievedStruct);
   //  return nil, nil
 
 
