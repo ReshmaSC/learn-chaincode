@@ -19,7 +19,7 @@ package main
 import (
 	"errors"
 	"fmt"
-
+	"encoding/json"
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
 
@@ -114,4 +114,104 @@ func (t *SimpleChaincode) write(stub shim.ChaincodeStubInterface, args []string)
         return nil, err
     }
     return nil, nil
+}
+
+
+
+func (t *SimpleChaincode) vehiclee(stub *shim.ChaincodeStub, args [] string) ([]byte, error) {
+
+type VehicleGroup struct {
+
+		ID     int
+
+		Vin   string
+
+		Make  string
+
+		Model string
+
+		Reg   string
+
+		Owners string
+
+		Color string
+
+	}
+
+
+	
+
+
+var jsonBlob = []byte(`[
+
+	{"ID": 1,"VIN":"287437467447767","Make":"Toyota","Model":"Auris","Color":"Blue","Reg":"LM16 YHU","Owners":"DVLA"},
+	{"ID": 2,"VIN":"549523556856725","Make":"Jaguar","Model":"F-Type","Color":"Red","Reg":"HE16 WDZ","Owners":"LeaseCan"}
+ 
+
+
+		
+
+	]`)
+	
+
+var vehicle []VehicleGroup
+
+	err := json.Unmarshal(jsonBlob, &vehicle)
+
+	if err != nil {
+		fmt.Println("error:", err)
+
+	}
+
+	fmt.Printf("%+v", vehicle)
+
+type SomeStruct struct {
+
+		
+
+		AVal   string
+
+		BVal []string
+
+	}
+
+
+
+
+
+//constructing and storing json object
+    myStruct := SomeStruct{
+        AVal: "Om Sai Ram",
+        BVal: []string{"Om Sai ram1","Om Sai ram2","Om Sai ram3"},
+    }
+    myStructBytes, err := json.Marshal(myStruct)
+    _ = err //ignore errors for example
+    stub.PutState("myStructKey",myStructBytes)
+
+    //get state back to object
+    var retrievedStruct SomeStruct
+    retrievedBytes, err := stub.GetState("myStructKey")
+    json.Unmarshal(retrievedBytes,retrievedStruct)
+
+    //congratulations, retrievedStruct now contains the data you stored earlier
+    return nil,nil    
+    
+
+   // err = stub.PutState(vehicle, []byte(value))  //write the variable into the chaincode state
+
+     //err := stub.PutState("hello_world", []byte(args[0]))
+   // if err != nil {
+    //  return nil, err
+//   }
+
+
+//    fmt.Printf("Reshma1", vehicle);
+  //  return nil, nil
+
+
+
+
+
+
+
 }
