@@ -192,9 +192,13 @@ type SomeStruct struct {
     json.Unmarshal(retrievedBytes,retrievedStruct)
 
 
+ return nil,nil    
 
-
-
+//constructing and storing json object
+ //   myStruct := SomeStruct{
+  //      AVal: "Om Sai Ram",
+   //     BVal: []string{"Om Sai ram1","Om Sai ram2","Om Sai ram3"},
+   // }
 //    myStructBytes, err := json.Marshal(myStruct)
   //  _ = err //ignore errors for example
     //stub.PutState("myStructKey",myStructBytes)
@@ -205,7 +209,7 @@ type SomeStruct struct {
     //json.Unmarshal(retrievedBytes,retrievedStruct)
 
     //congratulations, retrievedStruct now contains the data you stored earlier
-    return nil,nil    
+   
     
 
    // err = stub.PutState(vehicle, []byte(value))  //write the variable into the chaincode state

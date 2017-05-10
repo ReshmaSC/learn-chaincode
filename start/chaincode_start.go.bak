@@ -195,14 +195,7 @@ type SomeStruct struct {
 
 
 
-//    myStructBytes, err := json.Marshal(myStruct)
-  //  _ = err //ignore errors for example
-    //stub.PutState("myStructKey",myStructBytes)
-
-    //get state back to object
-//    var retrievedStruct SomeStruct
-  //  retrievedBytes, err := stub.GetState("myStructKey")
-    //json.Unmarshal(retrievedBytes,retrievedStruct)
+t)
 
     //congratulations, retrievedStruct now contains the data you stored earlier
     return nil,nil    
