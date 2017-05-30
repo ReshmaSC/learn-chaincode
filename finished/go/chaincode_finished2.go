@@ -34,55 +34,30 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	switch function {
 
 	case "insertRowTableOne":
-		if len(args) < 6 {
-			return nil, errors.New("insertTableOne failed. Must include 6 column values")
+		if len(args) < 3 {
+			return nil, errors.New("insertTableOne failed. Must include 3 column values")
 		}
 
-		//col1Val := args[0]
-		//col2Int, err := strconv.ParseInt(args[1], "10", "32")
-		//if err != nil {
-		//	return nil, errors.New("insertTableOne failed. arg[1] must be convertable to int32")
-		//}
-		//col2Val := int32(col2Int)
-//		col3Int, err := strconv.ParseInt(args[2], "10", "32")
-		//if err != nil {
-		//	return nil, errors.New("insertTableOne failed. arg[2] must be convertable to int32")
-		//}
-		//col3Val := int32(col3Int)
-
-		//COMMENTED FOR hard coded values
-//		col1Val := args[0]
-//		col2Val := args[1]
-//		col3Val := args[2]
-//		col4Val := args[3]
-//		col5Val := args[4]
-//		col6Val := args[5]
-
-		col1Val := "287437467447767"
-		col2Val := "Toyota"
-		col3Val := "Auris"
-		col4Val := "Blue"
-		col5Val := "LM16 YHU"
-		col6Val := "DVLA"
-
-
-
+		col1Val := args[0]
+		col2Int, err := strconv.ParseInt(args[1], 10, 32)
+		if err != nil {
+			return nil, errors.New("insertTableOne failed. arg[1] must be convertable to int32")
+		}
+		col2Val := int32(col2Int)
+		col3Int, err := strconv.ParseInt(args[2], 10, 32)
+		if err != nil {
+			return nil, errors.New("insertTableOne failed. arg[2] must be convertable to int32")
+		}
+		col3Val := int32(col3Int)
 
 		var columns []*shim.Column
 		//col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
-		
-		col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
+		col1 := shim.Column{Value: &shim.Column_Int32_{Int32_: col1Val}}
 		col2 := shim.Column{Value: &shim.Column_String_{String_: col2Val}}
 		col3 := shim.Column{Value: &shim.Column_String_{String_: col3Val}}
-		col4 := shim.Column{Value: &shim.Column_String_{String_: col4Val}}
-		col5 := shim.Column{Value: &shim.Column_String_{String_: col5Val}}
-		col6 := shim.Column{Value: &shim.Column_String_{String_: col6Val}}
 		columns = append(columns, &col1)
 		columns = append(columns, &col2)
 		columns = append(columns, &col3)
-		columns = append(columns, &col4)
-		columns = append(columns, &col5)
-		columns = append(columns, &col6)
 
 		row := shim.Row{Columns: columns}
 		ok, err := stub.InsertRow("tableOne", row)
@@ -185,24 +160,15 @@ func main() {
 func createTableOne(stub shim.ChaincodeStubInterface) error {
 	// Create table one
 	var columnDefsTableOne []*shim.ColumnDefinition
-	columnOneTableOneDef := shim.ColumnDefinition{Name: "Vehicle_VIN",
+	columnOneTableOneDef := shim.ColumnDefinition{Name: "colOneTableOne",
 		Type: shim.ColumnDefinition_STRING, Key: true}
-	columnTwoTableOneDef := shim.ColumnDefinition{Name: "Vehicle_Make",
-		Type: shim.ColumnDefinition_STRING, Key: false}
-	columnThreeTableOneDef := shim.ColumnDefinition{Name: "Vehicle_Model",
-		Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFourTableOneDef := shim.ColumnDefinition{Name: "Vehicle_Colour",
-		Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFiveTableOneDef := shim.ColumnDefinition{Name: "Vehicle_Reg",
-		Type: shim.ColumnDefinition_STRING, Key: false}
-	columnsSixTableOneDef := shim.ColumnDefinition{Name: "Vehicle_Owner",
-		Type: shim.ColumnDefinition_STRING, Key: false}
+	columnTwoTableOneDef := shim.ColumnDefinition{Name: "colTwoTableOne",
+		Type: shim.ColumnDefinition_INT32, Key: false}
+	columnThreeTableOneDef := shim.ColumnDefinition{Name: "colThreeTableOne",
+		Type: shim.ColumnDefinition_INT32, Key: false}
 	columnDefsTableOne = append(columnDefsTableOne, &columnOneTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnTwoTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnThreeTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnFourTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnFiveTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnsSixTableOneDef)
 	return stub.CreateTable("tableOne", columnDefsTableOne)
 }
 

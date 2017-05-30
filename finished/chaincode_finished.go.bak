@@ -63,7 +63,7 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		col3Val := "Auris"
 		col4Val := "Blue"
 		col5Val := "LM16 YHU"
-		col6Val := "DVLA"
+		col6Val := args[5]
 
 
 
