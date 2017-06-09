@@ -51,21 +51,14 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 		//col3Val := int32(col3Int)
 
 		//COMMENTED FOR hard coded values
-//		col1Val := args[0]
-//		col2Val := args[1]
-//		col3Val := args[2]
-//		col4Val := args[3]
-//		col5Val := args[4]
-//		col6Val := args[5]
-
-		col1Val := "287437467447767"
-		col2Val := "Toyota"
-		col3Val := "Auris"
-		col4Val := "Blue"
-		col5Val := "LM16 YHU"
+		col1Val := args[0]
+		col2Val := args[1]
+		col3Val := args[2]
+		col4Val := args[3]
+		col5Val := args[4]
 		col6Val := args[5]
 
-
+		
 
 
 		var columns []*shim.Column
