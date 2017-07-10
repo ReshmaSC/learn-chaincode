@@ -3,9 +3,11 @@
 package main
 
 import (
-	//"encoding/json"
+	"encoding/json"
 	"errors"
 	"fmt"
+	//"strconv"
+      s "strings"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 )
@@ -14,10 +16,25 @@ import (
 type SimpleChaincode struct {
 }
 
+
+
+type tabone struct {
+
+VehicleId string       `json:"vehicleId"`
+VehicleMake string     `json:"vehicleMake"`
+VehicleModel string    `json:"vehicleModel"`
+VehicleColour string   `json:"vehicleColour"`
+VehicleReg string      `json:"vehicleReg"`
+VehicleOwner string    `json:"vehicleOwner"`
+}
+
+
+
+
 // Init create tables for tests
 func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	// Create table one
-	err := createTableAuction(stub)
+	err := createTableOne(stub)
 	if err != nil {
 		return nil, fmt.Errorf("Error creating table one during init. %s", err)
 	}
@@ -32,132 +49,59 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 
 	switch function {
 
-	case "insertRowAuction":
-		if len(args) < 8 {
-			return nil, errors.New("insertTableOne failed. Must include 8 column values")
+	case "insertRowTableOne":
+		if len(args) < 3 {
+			return nil, errors.New("insertTableOne failed. Must include 3 column values")
 		}
-
-
-		//COMMENTED FOR hard coded values
-		col1Val := args[0]
-		col2Val := args[1]
-		col3Val := args[2]
-		col4Val := args[3]
-		col5Val := args[4]
-		col6Val := args[5]
-		col7Val := args[6]
-		col8Val := args[7]
-		col9Val := args[8]
-		col10Val := args[9]
-		col11Val := args[10]
-		col12Val := args[11]
-		col13Val := args[12]
-		col14Val := args[13]
-		col15Val := args[14]
-		col16Val := args[15]
-		col17Val := args[16]
-//		col18Val := args[17]
-
+     var str [] string
 		
-
+		for i := 0; i < len(args); i++ {
+		
+		str = s.Split(args[i],"-")
+		
+		
+		col1Val := str[0]
+		//col2Int, err := strconv.ParseInt(str[1], 10, 32)
+		col2Val :=str[1]
+		col3Val := str[2]
+		col4Val := str[3]
+		col5Val := str[4]
+		col6Val := str[5]
+		
+		
+	//	col2Val := int32(col2Int)
+	//	col3Int, err := strconv.ParseInt(str[2], 10, 32)
+		
+		//col3Val := int32(col3Int)
 
 		var columns []*shim.Column
-		//col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
-		
 		col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
 		col2 := shim.Column{Value: &shim.Column_String_{String_: col2Val}}
 		col3 := shim.Column{Value: &shim.Column_String_{String_: col3Val}}
 		col4 := shim.Column{Value: &shim.Column_String_{String_: col4Val}}
-		col5 := shim.Column{Value: &shim.Column_String_{String_: col5Val}}
-		col6 := shim.Column{Value: &shim.Column_String_{String_: col6Val}}
-		col7 := shim.Column{Value: &shim.Column_String_{String_: col7Val}}
-		col8 := shim.Column{Value: &shim.Column_String_{String_: col8Val}}
-		col9 := shim.Column{Value: &shim.Column_String_{String_: col9Val}}
-		col10 := shim.Column{Value: &shim.Column_String_{String_: col10Val}}
-		col11 := shim.Column{Value: &shim.Column_String_{String_: col11Val}}
-		col12 := shim.Column{Value: &shim.Column_String_{String_: col12Val}}
-		col13 := shim.Column{Value: &shim.Column_String_{String_: col13Val}}
-		col14 := shim.Column{Value: &shim.Column_String_{String_: col14Val}}
-		col15 := shim.Column{Value: &shim.Column_String_{String_: col15Val}}
-		col16 := shim.Column{Value: &shim.Column_String_{String_: col16Val}}
-		col17 := shim.Column{Value: &shim.Column_String_{String_: col17Val}}
-//		col18 := shim.Column{Value: &shim.Column_String_{String_: col18Val}}
+        col5 := shim.Column{Value: &shim.Column_String_{String_: col5Val}}
+        col6 := shim.Column{Value: &shim.Column_String_{String_: col6Val}}  		
 		columns = append(columns, &col1)
 		columns = append(columns, &col2)
 		columns = append(columns, &col3)
 		columns = append(columns, &col4)
 		columns = append(columns, &col5)
 		columns = append(columns, &col6)
-		columns = append(columns, &col7)
-		columns = append(columns, &col8)
-		columns = append(columns, &col9)
-		columns = append(columns, &col10)
-		columns = append(columns, &col11)
-		columns = append(columns, &col12)
-		columns = append(columns, &col13)
-		columns = append(columns, &col14)
-		columns = append(columns, &col15)
-		columns = append(columns, &col16)
-		columns = append(columns, &col17)
-//		columns = append(columns, &col18)
 
 		row := shim.Row{Columns: columns}
-		ok, err := stub.InsertRow("auction", row)
+		ok, err := stub.InsertRow("tableOne", row)
 		if err != nil {
-			return nil, fmt.Errorf("insertauction operation failed. %s", err)
+			return nil, fmt.Errorf("insertTableOne operation failed. %s", err)
 		}
 		if !ok {
-			return nil, errors.New("insertauction operation failed. Row with given key already exists")
+			return nil, errors.New("insertTableOne operation failed. Row with given key already exists")
 		}
+       
+	   
+	   }
 
-
-	/*case "replaceRowAuction":
-		if len(args) < 3 {
-			return nil, errors.New("replaceRowAuction failed. Must include 3 column values")
-		}
-
-		col1Val := args[0]
-		col2Int, err := strconv.ParseInt(args[1], 10, 32)
-		if err != nil {
-			return nil, errors.New("replaceRowAuction failed. arg[1] must be convertable to int32")
-		}
-		col2Val := int32(col2Int)
-		col3Int, err := strconv.ParseInt(args[2], 10, 32)
-		if err != nil {
-			return nil, errors.New("replaceRowAuction failed. arg[2] must be convertable to int32")
-		}
-		col3Val := int32(col3Int)
-
-		var columns []*shim.Column
-		col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
-		col2 := shim.Column{Value: &shim.Column_Int32{Int32: col2Val}}
-		col3 := shim.Column{Value: &shim.Column_Int32{Int32: col3Val}}
-		columns = append(columns, &col1)
-		columns = append(columns, &col2)
-		columns = append(columns, &col3)
-
-		row := shim.Row{Columns: columns}
-		ok, err := stub.ReplaceRow("tableOne", row)
-		if err != nil {
-			return nil, fmt.Errorf("replaceRowTableOne operation failed. %s", err)
-		}
-		if !ok {
-			return nil, errors.New("replaceRowTableOne operation failed. Row with given key does not exist")
-		}*/
-
-	case "deleteAndRecreateAuction":
-
-		err := stub.DeleteTable("auction")
-		if err != nil {
-			return nil, fmt.Errorf("deleteAndRecreateAuction operation failed. Error deleting table. %s", err)
-		}
-
-		err = createTableAuction(stub)
-		if err != nil {
-			return nil, fmt.Errorf("deleteAndRecreateAuction operation failed. Error creating table. %s", err)
-		}
-
-		return nil, nil
+	
+	
 
 	default:
 		return nil, errors.New("Unsupported operation")
@@ -169,9 +113,9 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
 	switch function {
 
-	case "getRowAuction":
+	case "getRowTableOne":
 		if len(args) < 1 {
-			return nil, errors.New("getRowAuction failed. Must include 1 key value")
+			return nil, errors.New("getRowTableOne failed. Must include 1 key value")
 		}
 
 		col1Val := args[0]
@@ -179,14 +123,52 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 		col1 := shim.Column{Value: &shim.Column_String_{String_: col1Val}}
 		columns = append(columns, col1)
 
-		row, err := stub.GetRow("auction", columns)
+		row, err := stub.GetRow("tableOne", columns)
 		if err != nil {
 			return nil, fmt.Errorf("getRowTableOne operation failed. %s", err)
 		}
 
 		rowString := fmt.Sprintf("%s", row)
 		return []byte(rowString), nil
-
+		
+	
+	case "getRowsTableOne":
+		
+		var columns []shim.Column
+		rows, err := stub.GetRows("tableOne", columns)
+		if err != nil {
+		return nil, fmt.Errorf("Failed to retrieve row")
+	}
+	
+	res2E:= []*tabone{}
+	
+	for row := range rows {
+		newApp:= new(tabone)
+		newApp.VehicleId = row.Columns[0].GetString_()
+		newApp.VehicleMake = row.Columns[1].GetString_()
+		newApp.VehicleModel = row.Columns[2].GetString_()
+		newApp.VehicleColour = row.Columns[3].GetString_()
+		newApp.VehicleReg = row.Columns[4].GetString_()
+		newApp.VehicleOwner = row.Columns[5].GetString_()
+		
+		
+		
+		
+		fmt.Println("printing test value ----"+row.Columns[0].GetString_())
+		fmt.Println("printing test value ----"+row.Columns[1].GetString_())
+		fmt.Println("printing test value ----"+row.Columns[2].GetString_())
+		//fmt.Println("printing test value *****"+newApp.ColOneTableOne)
+		//fmt.Println("printing test value *****"+newApp.ColTwoTableOne)
+		//fmt.Println("printing test value *******"+newApp.ColThreeTableOne)
+		
+		res2E=append(res2E,newApp)
+		
+	}
+	res2F, _ := json.Marshal(res2E)
+	
+	return res2F, nil
+	
+		
 	default:
 		return nil, errors.New("Unsupported operation")
 	}
@@ -199,45 +181,41 @@ func main() {
 	}
 }
 
-func createTableAuction(stub shim.ChaincodeStubInterface) error {
+func createTableOne(stub shim.ChaincodeStubInterface) error {
 	// Create table one
 	var columnDefsTableOne []*shim.ColumnDefinition
+	columnOneTableOneDef := shim.ColumnDefinition{Name: "VehicleId",
+		Type: shim.ColumnDefinition_STRING, Key: true}
+	columnTwoTableOneDef := shim.ColumnDefinition{Name: "VehicleMake",
+		Type: shim.ColumnDefinition_STRING, Key: false}
+	columnThreeTableOneDef := shim.ColumnDefinition{Name: "VehicleModel",
+		Type: shim.ColumnDefinition_STRING, Key: false}
 	
-	columnOneTableOneDef := shim.ColumnDefinition{Name: "auction ID",Type: shim.ColumnDefinition_STRING, Key: true}
-	columnTwoTableOneDef := shim.ColumnDefinition{Name: "Consignor ID",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnThreeTableOneDef := shim.ColumnDefinition{Name: "Sale Year",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFourTableOneDef := shim.ColumnDefinition{Name: "Sale Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFiveTableOneDef := shim.ColumnDefinition{Name: "Lane Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnSixTableOneDef := shim.ColumnDefinition{Name: "RUN Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnSevenTableOneDef := shim.ColumnDefinition{Name: "Lease Account Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnEightTableOneDef := shim.ColumnDefinition{Name: "Work order Number",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnNineTableOneDef := shim.ColumnDefinition{Name: "Mileage",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnTenTableOneDef := shim.ColumnDefinition{Name: "Buyer ID",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnElevenTableOneDef := shim.ColumnDefinition{Name: "Buyer Name",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnTwelveTableOneDef := shim.ColumnDefinition{Name: "Sale Price",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnThirteenTableOneDef := shim.ColumnDefinition{Name: "Check Amt",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFourteenTableOneDef := shim.ColumnDefinition{Name: "Payment Mode",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnFifteenTableOneDef := shim.ColumnDefinition{Name: "Title Status",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnSixteenTableOneDef := shim.ColumnDefinition{Name: "Vehicle Status",Type: shim.ColumnDefinition_STRING, Key: false}
-	columnSeventeenTableOneDef := shim.ColumnDefinition{Name: "vehicle ID",Type: shim.ColumnDefinition_STRING, Key: true}
+	columnFourTableOneDef := shim.ColumnDefinition{Name: "VehicleColour",
+		Type: shim.ColumnDefinition_STRING, Key: false}
+		
+	columnFiveTableOneDef := shim.ColumnDefinition{Name: "VehicleReg",
+		Type: shim.ColumnDefinition_STRING, Key: false}	
+		
+	columnSixTableOneDef := shim.ColumnDefinition{Name: "VehicleOwner",
+		Type: shim.ColumnDefinition_STRING, Key: false}	
+	
+	
+	
+	
 	columnDefsTableOne = append(columnDefsTableOne, &columnOneTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnTwoTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnThreeTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnFourTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnFiveTableOneDef)
 	columnDefsTableOne = append(columnDefsTableOne, &columnSixTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnSevenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnEightTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnNineTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnTenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnElevenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnTwelveTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnThirteenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnFourteenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnFifteenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnSixteenTableOneDef)
-	columnDefsTableOne = append(columnDefsTableOne, &columnSeventeenTableOneDef)
 	
-	return stub.CreateTable("auction", columnDefsTableOne)
+	
+	
+	
+	
+	return stub.CreateTable("tableOne", columnDefsTableOne)
+	
+	
 }
 
